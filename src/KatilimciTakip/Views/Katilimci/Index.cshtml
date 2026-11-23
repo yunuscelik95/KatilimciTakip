@@ -1,0 +1,49 @@
+﻿@model List<Katilimci>
+@{
+    ViewBag.Title = "Katılımcılar";
+}
+
+<h1>Katılımcılar</h1>
+
+@Html.ActionLink("Yeni Katılımcı", "Ekle", null, new { @class = "btn btn-success" })
+
+@using (Html.BeginForm("Index", "Katilimci", FormMethod.Get, new { @class = "mt-3 mb-3" }))
+{
+    <input type="text" name="arama" value="@ViewBag.Arama" placeholder="Ara" />
+    <button type="submit" class="btn btn-secondary btn-sm">Ara</button>
+}
+
+<table class="table">
+    <tr>
+        <th>Ad Soyad</th>
+        <th>Telefon</th>
+        <th>E-posta</th>
+        <th>Son Davet</th>
+        <th></th>
+    </tr>
+    @foreach (var k in Model)
+    {
+        <tr>
+            <td>@k.AdSoyad</td>
+            <td>@k.Telefon</td>
+            <td>@k.Eposta</td>
+            <td>@k.DavetKanali @k.DavetTarihi</td>
+            <td>
+                @using (Html.BeginForm("DavetGonder", "Katilimci", FormMethod.Post, new { style = "display:inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@k.Id" />
+                    <button type="submit" name="kanal" value="SMS" class="btn btn-primary btn-sm">SMS</button>
+                    <button type="submit" name="kanal" value="Mail" class="btn btn-primary btn-sm">Mail</button>
+                }
+                @Html.ActionLink("Geçmiş", "Gecmis", new { id = k.Id }, new { @class = "btn btn-info btn-sm" })
+                @Html.ActionLink("Düzenle", "Duzenle", new { id = k.Id }, new { @class = "btn btn-warning btn-sm" })
+                @using (Html.BeginForm("Sil", "Katilimci", new { id = k.Id }, FormMethod.Post, new { style = "display:inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                }
+            </td>
+        </tr>
+    }
+</table>

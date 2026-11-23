@@ -1,0 +1,22 @@
+﻿@model DavetGecmisiModel
+@{
+    ViewBag.Title = "Davet Geçmişi";
+}
+
+<h1>@Model.Katilimci.AdSoyad - Davet Geçmişi</h1>
+
+<table class="table">
+    <tr>
+        <th>Kanal</th>
+        <th>Tarih</th>
+    </tr>
+    @foreach (var kayit in Model.Kayitlar)
+    {
+        <tr>
+            <td>@kayit.Kanal</td>
+            <td>@kayit.DavetTarihi</td>
+        </tr>
+    }
+</table>
+
+@Html.ActionLink("Geri", "Index", null, new { @class = "btn btn-secondary" })
